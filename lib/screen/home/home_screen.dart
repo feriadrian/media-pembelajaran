@@ -11,8 +11,14 @@ import 'package:skripsi/service/services.dart';
 
 import '../../controller/controller.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<NavbarController>();
@@ -101,8 +107,12 @@ class HomeScreen extends StatelessWidget {
                         }
                         if (snapshot.hasData) {
                           if (snapshot.data!.isNotEmpty) {
-                            return SingleChildScrollView(
-                              child: Column(
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                await MateriServices().getAllMateri();
+                                setState(() {});
+                              },
+                              child: ListView(
                                 children: snapshot.data!
                                     .map(
                                       (e) => MateriCard(
@@ -118,6 +128,7 @@ class HomeScreen extends StatelessWidget {
                           } else {
                             return Center(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset(
                                     'assets/empty_state.svg',

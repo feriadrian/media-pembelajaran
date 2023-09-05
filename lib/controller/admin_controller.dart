@@ -103,9 +103,9 @@ class AdminController extends GetxController {
     urlC = TextEditingController();
   }
 
+  List<String> buildTitle = [];
   Future<List<String>> filterData() async {
     var data = await MateriServices().getSoalForAdmin();
-    List<String> buildTitle = [];
 
     for (var item in data) {
       buildTitle.add(item.materi!);

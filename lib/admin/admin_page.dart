@@ -408,9 +408,9 @@ class AdminPage extends StatelessWidget {
                                             (e) => MateriCard(
                                                 title: e,
                                                 press: () {
-                                                  Get.to(
-                                                      ListSoalSiswa(materi: e),
-                                                      arguments: e);
+                                                  Get.to(() => ListSoalSiswa(
+                                                        materi: e,
+                                                      ));
                                                 }),
                                           )
                                           .toList()),

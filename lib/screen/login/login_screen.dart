@@ -53,6 +53,7 @@ class LoginScreen extends StatelessWidget {
                             height: 24,
                           ),
                           CustomTextfield(
+                            textInputAction: TextInputAction.next,
                             keyboard: TextInputType.emailAddress,
                             controller: controller.email,
                             hintText: 'Email',
@@ -67,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                             height: 24,
                           ),
                           CustomTextfield(
+                            textInputAction: TextInputAction.done,
                             validator: (p0) {
                               if (p0 == null || p0.isEmpty) {
                                 return 'Field Tidak Boleh Kosong';

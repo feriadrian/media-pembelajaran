@@ -11,18 +11,24 @@ import 'package:skripsi/models/uploa_tugas_model.dart';
 import 'package:skripsi/screen/home/widgets/materi_card.dart';
 import 'package:skripsi/service/services.dart';
 
-class ListSoalSiswa extends StatelessWidget {
+class ListSoalSiswa extends StatefulWidget {
   const ListSoalSiswa({super.key, required this.materi});
   final String materi;
 
   @override
+  State<ListSoalSiswa> createState() => _ListSoalSiswaState();
+}
+
+class _ListSoalSiswaState extends State<ListSoalSiswa> {
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
     final controller = Get.find<AdminController>();
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            Get.arguments,
+            widget.materi,
             style: TextStyle(fontSize: 16, color: Colors.black),
           ),
           centerTitle: true),
@@ -30,12 +36,16 @@ class ListSoalSiswa extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(dPadding),
         child: FutureBuilder<List<UploadTugasModel>>(
-          future: TugasServices().getAllTugas(materi),
+          future: TugasServices().getAllTugas(widget.materi),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {
-                return SingleChildScrollView(
-                  child: Column(
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await TugasServices().getAllTugas(widget.materi);
+                    setState(() {});
+                  },
+                  child: ListView(
                       children: snapshot.data!
                           .map((e) => MateriCard(
                                 title: e.nilai == 0
@@ -44,7 +54,7 @@ class ListSoalSiswa extends StatelessWidget {
                                 press: () async {
                                   await controller
                                       .getPeriksaTugasForAdmin(
-                                          materi, e.fileName!)
+                                          widget.materi, e.fileName ?? '')
                                       .then((value) => Get.to(PdfView(
                                             value,
                                             data: e,

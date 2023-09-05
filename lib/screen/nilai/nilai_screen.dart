@@ -10,9 +10,14 @@ import 'package:skripsi/models/uploa_tugas_model.dart';
 import 'package:skripsi/screen/home/widgets/materi_card.dart';
 import 'package:skripsi/service/services.dart';
 
-class NilaiScrenn extends StatelessWidget {
+class NilaiScrenn extends StatefulWidget {
   const NilaiScrenn({super.key});
 
+  @override
+  State<NilaiScrenn> createState() => _NilaiScrennState();
+}
+
+class _NilaiScrennState extends State<NilaiScrenn> {
   @override
   Widget build(BuildContext context) {
     final navbarC = Get.find<NavbarController>();
@@ -27,8 +32,13 @@ class NilaiScrenn extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
-                  return SingleChildScrollView(
-                    child: Column(
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await TugasServices()
+                          .getAllTugasForSpesificSiswa(navbarC.user.name!);
+                      setState(() {});
+                    },
+                    child: ListView(
                         children: snapshot.data!
                             .map((e) => MateriCard(
                                   title: e.nilai == 0

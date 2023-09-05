@@ -15,6 +15,7 @@ class CustomTextfield extends StatelessWidget {
     this.icon,
     this.onTapPassWord,
     this.keyboard,
+    this.textInputAction,
   }) : super(key: key);
 
   final String? Function(String?)? validator;
@@ -28,6 +29,7 @@ class CustomTextfield extends StatelessWidget {
   final bool obscureText;
   final Icon? icon;
   final TextInputType? keyboard;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class CustomTextfield extends StatelessWidget {
       keyboardType: keyboard,
       obscureText: icon != null ? obscureText : false,
       onTap: onTap,
+      textInputAction: textInputAction,
       minLines: isWrap ? 3 : 1,
       maxLines: isWrap ? 6 : 1,
       onChanged: onChanged,

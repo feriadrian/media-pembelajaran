@@ -8,9 +8,14 @@ import 'package:skripsi/screen/home/widgets/materi_card.dart';
 
 import '../../config/config.dart';
 
-class TugasScreen extends StatelessWidget {
+class TugasScreen extends StatefulWidget {
   const TugasScreen({super.key});
 
+  @override
+  State<TugasScreen> createState() => _TugasScreenState();
+}
+
+class _TugasScreenState extends State<TugasScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -27,8 +32,12 @@ class TugasScreen extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isNotEmpty) {
-                    return SingleChildScrollView(
-                      child: Column(
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await controller.filterData();
+                        setState(() {});
+                      },
+                      child: ListView(
                         children: snapshot.data!
                             .map(
                               (e) => MateriCard(
